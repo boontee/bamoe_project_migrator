@@ -107,7 +107,7 @@ v9-app/
 
 ### Step 1: Create Project Using BAMOE Canvas Quarkus Accelerator
 
-Create a new BAMOE v9 project using the Quarkus Full accelerator (supports BPMN, DMN, and DRL). See the [main README - Creating BAMOE v9 Projects with Accelerators](../../v8-to-v9-migration-tutorials/README.md#creating-bamoe-v9-projects-with-accelerators) section for detailed instructions on both Git clone and Canvas web interface options.
+Create a new BAMOE v9 project using the Quarkus Full accelerator (supports BPMN, DMN, and DRL). See the [main README - Creating BAMOE v9 Projects with Accelerators](../../v8-to-v9-migration-samples/README.md#creating-bamoe-v9-projects-with-accelerators) section for detailed instructions on both Git clone and Canvas web interface options.
 
 For this tutorial, use the Quarkus Full accelerator for BPMN processes:
 ```bash
