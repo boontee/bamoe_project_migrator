@@ -174,7 +174,7 @@ Sub-Task 10    Runtime deployment and live-data cutover — deploy v9 service;
 > project, producing `migration-inventory.md`, and generating a clean v9 Quarkus
 > project that builds successfully with `mvn clean package`.
 
-https://github.com/user-attachments/assets/bamoe-project-migrator-bob-mode-demo
+[![BAMOE Migrator Bob Mode Demo](https://img.youtube.com/vi/e5pNUnvGr9Y/maxresdefault.jpg)](https://www.youtube.com/watch?v=e5pNUnvGr9Y)
 
 > **Local copy:** [`demos/BAMOE Project Migrator Bob Mode Demo.mp4`](demos/BAMOE%20Project%20Migrator%20Bob%20Mode%20Demo.mp4)
 
