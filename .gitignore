@@ -20,3 +20,6 @@ Thumbs.db
 
 # migration workspace scratch files
 migration-workspace/
+
+# Large video source files
+*.mov
