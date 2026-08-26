@@ -1,0 +1,22 @@
+# Maven build outputs
+target/
+*/target/
+**/target/
+
+# Maven local repository (large binary artifacts)
+mvn_repo/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+.vscode/settings.json
+
+# Bob internal
+.bob/
+
+# migration workspace scratch files
+migration-workspace/

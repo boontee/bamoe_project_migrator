@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>evaluation</groupId>
+  <artifactId>evaluation</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>Evaluation_Process</name>
+  <description>Getting started Business Process for evaluating employees</description>
+
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- BAMOE BOM version — matches local BAMOE Maven repository 9.5.2-ibm-0002 -->
+    <version.bamoe>9.5.2-ibm-0002</version.bamoe>
+    <!-- Quarkus version as declared inside bamoe-quarkus-bom 9.5.2-ibm-0002 -->
+    <version.quarkus>3.27.5.1</version.quarkus>
+    <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
+    <version.maven-surefire-plugin>3.3.1</version.maven-surefire-plugin>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- BAMOE Quarkus BOM — manages all BAMOE, Kogito, jBPM, Drools, and Quarkus versions -->
+      <dependency>
+        <groupId>com.ibm.bamoe</groupId>
+        <artifactId>bamoe-quarkus-bom</artifactId>
+        <version>${version.bamoe}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- ── Workflow runtime ── -->
+    <!-- Provides BPMN execution with embedded Drools rule engine -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-with-drools-quarkus</artifactId>
+    </dependency>
+
+    <!-- ── Process management REST add-on (start / query / signal processes via REST) ── -->
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-addons-quarkus-process-management</artifactId>
+    </dependency>
+
+    <!-- ── SVG diagram serving (process diagram endpoint) ── -->
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-addons-quarkus-process-svg</artifactId>
+    </dependency>
+
+    <!-- ── Source files add-on (serves .bpmn source via REST) ── -->
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-addons-quarkus-source-files</artifactId>
+    </dependency>
+
+    <!-- ── REST Work Item (HTTP call-out from process) ── -->
+    <dependency>
+      <groupId>org.kie.kogito</groupId>
+      <artifactId>kogito-rest-workitem</artifactId>
+    </dependency>
+
+    <!-- ── JAX-RS / JSON ── -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-jackson</artifactId>
+    </dependency>
+
+    <!-- ── OpenAPI / Swagger UI ── -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
+    </dependency>
+
+    <!-- ── Health checks ── -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
+    </dependency>
+
+    <!-- ── Test ── -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.quarkus.platform</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${version.quarkus}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+              <goal>generate-code</goal>
+              <goal>generate-code-tests</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.maven-compiler-plugin}</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
+        <configuration>
+          <systemPropertyVariables>
+            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- Development profile: in-memory H2 datasource + BAMOE Dev UI -->
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-jdbc-h2</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>com.ibm.bamoe</groupId>
+          <artifactId>bamoe-quarkus-devui</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <!-- Native image build profile -->
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <properties>
+        <quarkus.package.type>native</quarkus.package.type>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>
